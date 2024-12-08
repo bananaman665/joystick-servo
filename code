@@ -1,0 +1,34 @@
+#include <Servo.h>
+
+Servo myServoX;  // Servo for X-axis
+Servo myServoY;  // Servo for Y-axis (if needed)
+
+int joystickX = A0;  // X-axis of the joystick
+int joystickY = A1;  // Y-axis of the joystick
+int servoPinX = 9;   // PWM pin connected to the X-axis servo
+int servoPinY = 10;  // PWM pin connected to the Y-axis servo
+
+void setup() {
+  myServoX.attach(servoPinX);  // Attach the X-axis servo to pin 9
+  myServoY.attach(servoPinY);  // Attach the Y-axis servo to pin 10
+  Serial.begin(9600);          // Start serial communication for debugging
+}
+
+void loop() {
+  int xValue = analogRead(joystickX);  // Read the X-axis value (0-1023)
+  int yValue = analogRead(joystickY);  // Read the Y-axis value (0-1023)
+
+  // Map joystick values to servo angles (0-180 degrees)
+  int servoX = map(xValue, 0, 1023, 0, 180);
+  int servoY = map(yValue, 0, 1023, 0, 180);
+
+  // Move the servos based on joystick input
+  myServoX.write(servoX);  // Set X-axis servo position
+  myServoY.write(servoY);  // Set Y-axis servo position
+
+  // For debugging, print joystick values to the serial monitor
+  Serial.print("X: "); Serial.print(servoX); 
+  Serial.print(" Y: "); Serial.println(servoY);
+
+  delay(2000);  // Wait for the servos to reach the position
+}
